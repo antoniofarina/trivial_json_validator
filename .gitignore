@@ -1,0 +1,9 @@
+# this file is added at build time to let hugo access package.json variables (i.e: version)
+site/data/package.json
+node_modules/
+.DS_Store
+.Trashes
+.com.apple.*
+.vscode/*
+.idea
+*.log

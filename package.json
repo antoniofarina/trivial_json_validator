@@ -1,0 +1,41 @@
+{
+    "name": "json-validator",
+    "version": "0.0.0",
+    "description": "Json syntax validator",
+    "main": "index.js",
+    "author": "Antonio Farina <ant.farina@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "cleanup": "rm -rf node_modules; rm -f yarn.lock; yarn cache clean",
+        "depcheck": "npx depcheck",
+        "newmajor": "npm version major && $npm_package_scripts_push",
+        "newminor": "npm version minor && $npm_package_scripts_push",
+        "newpatch": "npm version patch && $npm_package_scripts_push",
+        "push": "git push origin --follow-tags",
+        "start": "node --tls-min-v1.0 index.js",
+        "debug": "node --nolazy --inspect-brk=9229 index.js",
+        "docker:build": "docker build --no-cache --tag antoniofarina/$npm_package_name   --file ./.ops/Dockerfile ./",
+        "docker:run": "docker stop $npm_package_name; docker container prune -f; docker run --name $npm_package_name --tty --interactive --restart unless-stopped --detach --env NODE_ENV=development --publish 9010:9010 antoniofarina/$npm_package_name:latest",
+        "docker:push:currentversion": "docker push translatednet/$npm_package_name:$npm_package_version",
+        "docker:push:latest": "docker push translatednet/$npm_package_name:latest",
+        "docker:push": "yarn docker:push:latest && yarn docker:push:currentversion",
+        "docker:bash": "docker exec --tty --interactive $npm_package_name /bin/bash",
+        "docker:log": "docker logs -f $npm_package_name",
+        "test": "mocha test/test.js"
+    },
+    "keywords": [
+        "json",
+        "jsonvalidation"
+    ],
+    "dependencies": {
+        "jsonlint-mod": "1.7.5",
+        "fastify": "3.0.3",
+        "fastify-formbody": "4.0.3",
+        "jsonminify": "0.4.1",
+        "js-beautify": "^1.11.0"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "mocha": "8.0.1"
+    }
+}
