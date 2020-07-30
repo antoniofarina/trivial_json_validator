@@ -5,6 +5,10 @@
     "main": "index.js",
     "author": "Antonio Farina <ant.farina@gmail.com>",
     "license": "MIT",
+    "repository": {
+        "type" : "git",
+        "url" : "https://github.com/antoniofarina/trivial_json_validator"
+      },
     "scripts": {
         "cleanup": "rm -rf node_modules; rm -f yarn.lock; yarn cache clean",
         "depcheck": "npx depcheck",
@@ -14,13 +18,6 @@
         "push": "git push origin --follow-tags",
         "start": "node --tls-min-v1.0 index.js",
         "debug": "node --nolazy --inspect-brk=9229 index.js",
-        "docker:build": "docker build --no-cache --tag antoniofarina/$npm_package_name   --file ./.ops/Dockerfile ./",
-        "docker:run": "docker stop $npm_package_name; docker container prune -f; docker run --name $npm_package_name --tty --interactive --restart unless-stopped --detach --env NODE_ENV=development --publish 9010:9010 antoniofarina/$npm_package_name:latest",
-        "docker:push:currentversion": "docker push translatednet/$npm_package_name:$npm_package_version",
-        "docker:push:latest": "docker push translatednet/$npm_package_name:latest",
-        "docker:push": "yarn docker:push:latest && yarn docker:push:currentversion",
-        "docker:bash": "docker exec --tty --interactive $npm_package_name /bin/bash",
-        "docker:log": "docker logs -f $npm_package_name",
         "test": "mocha test/test.js"
     },
     "keywords": [
