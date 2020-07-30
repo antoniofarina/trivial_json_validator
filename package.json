@@ -1,14 +1,14 @@
 {
     "name": "json-syntax-checker",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "description": "Json syntax validator. Able to fix some trivial errors",
     "main": "index.js",
     "author": "Antonio Farina <ant.farina@gmail.com>",
     "license": "MIT",
     "repository": {
-        "type" : "git",
-        "url" : "https://github.com/antoniofarina/trivial_json_validator"
-      },
+        "type": "git",
+        "url": "https://github.com/antoniofarina/trivial_json_validator"
+    },
     "scripts": {
         "cleanup": "rm -rf node_modules; rm -f yarn.lock; yarn cache clean",
         "depcheck": "npx depcheck",
