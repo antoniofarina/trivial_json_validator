@@ -28,28 +28,62 @@ const minify = require("jsonminify")
 const beautify = require('js-beautify/js/lib/beautify');
 
 const validate_json = async (input) => {
+    let parse_error = ''
     try {
-        try {
-            parsed = JSON.parse(input)
-            return input
-        } catch (e) {
-            console.error ("invalid json: will try to fix ")
-        }
+        parsed = JSON.parse(input)
+        return input
+    } catch (e) {
+        parse_error = e
+        console.error ("invalid json: will try to fix ")
+    }
 
-        input = minify(input)
-        await jsonlint.parse(input);
-        let reformat = await beautify.js_beautify(input, {
+    try {
+        let minified = minify(input)
+        await jsonlint.parse(minified);
+        let reformat = await beautify.js_beautify(minified, {
             indent_with_tabs: false
         })
         return reformat
     } catch (e) {
-        // retrieve line number from error string
-        console.error("throw ", e.message ? e.message : e);
-        throw (e.message ? e.message : e)
+        let error_message = _get_error_message(parse_error, input)
+        if (!error_message) {
+            error_message = `Invalid json ${e.message}`
+        }
+        
+        console.error("json validator error ", error_message);
+        throw (error_message)
     }
 }
 
-exports.validate_json = validate_json
-
-
+const _get_error_message = (e, input_string) => {
+    e = e.message? e.message: e.toString()
+    let pos = e.match(/position (\d+)/)
     
+
+    console.log (pos)
+    // unable to extract the position of the error. Exititing
+    if (!pos[1]) {
+        return null
+    }
+    let message = e.substr(0, pos['index']-1)
+
+    // extrct the error position from the message
+    let _abs_error_position = parseInt(pos[1])
+    // extract the input string fro the beginning until the error position
+    let _err_substr = input_string.substr(0, _abs_error_position)
+    // split the substring by lines
+    let _lines = _err_substr.split("\n")
+    
+    let error_line = _lines.length + 1 // the error is at last line
+    _lines.pop() // delete the last line (the line where count the final position)
+    // count the chars in the previous lines
+    let _previous_lines_count_char = _lines.reduce((acc, element) => {
+        return acc + element.length     
+    }, 0); 
+    // calculate the relative position of the error in the error_line
+    let error_position = _abs_error_position - _previous_lines_count_char 
+    return `${message} line ${error_line} position ${error_position}`
+
+}
+
+exports.validate_json = validate_json
