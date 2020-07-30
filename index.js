@@ -58,6 +58,7 @@ const validate_json = async (input) => {
 const _get_error_message = (e, input_string) => {
     e = e.message? e.message: e.toString()
     let pos = e.match(/position (\d+)/)
+    //console.log (pos)
     // unable to extract the position of the error. Exititing
     if (!pos[1]) {
         return null
@@ -65,22 +66,29 @@ const _get_error_message = (e, input_string) => {
     let message = e.substr(0, pos['index']-1)
 
     // extrct the error position from the message
-    let _abs_error_position = parseInt(pos[1])
+    let _abs_error_position = parseInt(pos[1]) + 1
     // extract the input string fro the beginning until the error position
     let _err_substr = input_string.substr(0, _abs_error_position)
     // split the substring by lines
     let _lines = _err_substr.split("\n")
-    
-    let error_line = _lines.length + 1 // the error is at last line
-    _lines.pop() // delete the last line (the line where count the final position)
-    // count the chars in the previous lines
-    let _previous_lines_count_char = _lines.reduce((acc, element) => {
-        return acc + element.length     
-    }, 0); 
-    // calculate the relative position of the error in the error_line
-    let error_position = _abs_error_position - _previous_lines_count_char 
-    return `${message} line ${error_line} position ${error_position}`
 
+    // the error is at last line
+    let error_line = _lines.length 
+
+    // the position of the error is at the last extracted char 
+    let error_position = (_lines.pop().length) - 1 
+    
+    //console.log("error point",  error_line_content[error_position] )
+    return `${message} line ${error_line} position ${error_position}`
 }
 
 exports.validate_json = validate_json
+
+const fs = require ('fs');
+const { type } = require('os');
+let content = fs.readFileSync(__dirname + '/test/a.json').toString()
+content = Buffer.from(content, 'base64').toString()
+
+console.log(content.substr( 0,100))
+
+validate_json(content)
