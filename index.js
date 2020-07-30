@@ -83,12 +83,3 @@ const _get_error_message = (e, input_string) => {
 }
 
 exports.validate_json = validate_json
-
-const fs = require ('fs');
-const { type } = require('os');
-let content = fs.readFileSync(__dirname + '/test/a.json').toString()
-content = Buffer.from(content, 'base64').toString()
-
-console.log(content.substr( 0,100))
-
-validate_json(content)
