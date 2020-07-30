@@ -44,8 +44,8 @@ const validate_json = async (input) => {
         return reformat
     } catch (e) {
         // retrieve line number from error string
-        console.error("Error occurred", e.message ? e.message : e);
-        return null
+        console.error("throw ", e.message ? e.message : e);
+        throw (e.message ? e.message : e)
     }
 }
 

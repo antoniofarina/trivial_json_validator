@@ -25,6 +25,7 @@
 const fs = require('fs')
 const validate_json = require("../index").validate_json
 const expect = require('chai').expect
+const assert = require('chai').assert
 
 
 
@@ -39,13 +40,22 @@ describe('Json validator',  function() {
       });
     });
 
-    describe('Fix on  broken file', function() {
-        it('When invalid json is passed, then it is able to fix if the error is in extra spaces/newlines', async function () {
+    describe('On  broken file', function() {
+        it('When invalid json is passed, then it is able to fix if the error is related to extra spaces/extra newlines', async function () {
             this.timeout(0)
             let broken = fs.readFileSync(__dirname + '/broken.json').toString()
             let fixed = await validate_json(broken)
             expect(typeof (fixed)).to.equal('string');
         });
+
+        it('When invalid json is passed, then it throws if error is not related to extra spaces/extra newlines', async function () {
+            this.timeout(0)
+            let broken = fs.readFileSync(__dirname + '/broken_unfixable.json').toString()
+            //let fixed = await validate_json(broken)
+            let bind = validate_json.bind(validate_json, broken)
+            expect(function (){ validate_json (broken)}).to.throw();
+        });
+
       });
   });
 
