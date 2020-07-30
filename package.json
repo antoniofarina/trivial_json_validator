@@ -1,7 +1,7 @@
 {
-    "name": "json-validator",
+    "name": "json-syntax-checker",
     "version": "0.0.6",
-    "description": "Json syntax validator",
+    "description": "Json syntax validator. Able to fix some trivial errors",
     "main": "index.js",
     "author": "Antonio Farina <ant.farina@gmail.com>",
     "license": "MIT",
