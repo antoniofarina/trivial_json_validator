@@ -1,6 +1,6 @@
 {
     "name": "json-validator",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Json syntax validator",
     "main": "index.js",
     "author": "Antonio Farina <ant.farina@gmail.com>",
