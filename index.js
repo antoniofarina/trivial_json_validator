@@ -58,9 +58,6 @@ const validate_json = async (input) => {
 const _get_error_message = (e, input_string) => {
     e = e.message? e.message: e.toString()
     let pos = e.match(/position (\d+)/)
-    
-
-    console.log (pos)
     // unable to extract the position of the error. Exititing
     if (!pos[1]) {
         return null
