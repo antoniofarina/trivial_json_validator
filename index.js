@@ -23,9 +23,10 @@
  */
 
 
+const os = require("os");
 const jsonlint = require('jsonlint-mod')
 const minify = require("jsonminify")
-const beautify = require('js-beautify/js/lib/beautify');
+const beautify = require("js-beautify/js/lib/beautify");
 
 const validate_json = async (input) => {
     let parse_error = ''
@@ -69,8 +70,8 @@ const _get_error_message = (e, input_string) => {
     let _abs_error_position = parseInt(pos[1]) + 1
     // extract the input string fro the beginning until the error position
     let _err_substr = input_string.substr(0, _abs_error_position)
-    // split the substring by lines
-    let _lines = _err_substr.split("\n")
+    // split the substring by lines (use indipendet line separator)
+    let _lines = _err_substr.split(JSON.stringify(os.EOL))
 
     // the error is at last line
     let error_line = _lines.length 
